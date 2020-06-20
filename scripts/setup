@@ -7,6 +7,7 @@ _DOT_ENABLE_GC=1
 _DOT_GCROOT="$DOTFILE_DIR/.gcroot"
 _DOT_IS_INIT=
 _DOT_LNGLAGS=""
+_DOT_INSTALL_NVM=
 
 dot::_exit() {
   if [[ -s "$_DOT_LOGFILE" ]]; then
@@ -37,6 +38,12 @@ exec 2>>"$_DOT_LOGFILE"
   cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
 }
 
+@nvm() {
+  _DOT_SECTION="nvm"
+  echo "$(tput bold)== ${*:-Install nvm} ==$(tput sgr0)"
+  cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
+}
+
 @clean() {
   _DOT_SECTION="clean"
   echo "$(tput bold)== ${*:-Clean Dead Symlinks} ==$(tput sgr0)"
@@ -52,6 +59,7 @@ exec 2>>"$_DOT_LOGFILE"
 
   case "$_DOT_SECTION" in
     install) dot::install::task "$@" ;;
+    nvm) dot::nvm::task "$@" ;;
   esac
 }
 
@@ -59,12 +67,34 @@ exec 2>>"$_DOT_LOGFILE"
 #  tasks  #
 ###########
 
+# Skip section unless --init is specified
+# Globals:
+#  _DOT_SECTION
+#  _DOT_IS_INIT
+# Arguments:
+#   enable: Whether to skip the current section (true/false)
+# Returns:
+#  None
 dot::init() {
   case "$1" in
     true|yes|1) [[ -z "$_DOT_IS_INIT" ]] && dot::skip true ;;
     false|no|0) return ;;
     *) dot::_abort "Invalid argument: $1" ;;
   esac
+}
+
+dot::nvm::task() {
+  [[ -z "$_DOT_INSTALL_NVM" ]] && dot::skip true && return
+
+  echo -n "Installing nvm..."
+  export NVM_DIR="$HOME/.nvm" && (
+    [[ ! -d "$NVM_DIR" ]] && git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" >/dev/null 2>&1
+    pushd "$NVM_DIR" >/dev/null
+    git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)` >/dev/null 2>&1
+  ) && source "$NVM_DIR/nvm.sh" || (
+    dot::_print_badge::failed
+    popd >/dev/null
+  ) && dot::_print_badge::ok
 }
 
 dot::install::task() {
@@ -90,9 +120,9 @@ dot::install::task() {
   local src="$DOTFILE_DIR/home/$1"
   dot::_ln "$(dot::_relative_path "$src")" "$fname"
 
-  dot::_print_badge_ok
+  dot::_print_badge::ok
 
-  popd
+  popd >/dev/null
 }
 
 dot::_relative_path() {
@@ -177,7 +207,7 @@ dot::_print_badge() {
   fi
 }
 
-dot::_print_badge_ok() {
+dot::_print_badge::ok() {
   echo "[$(tput setaf 2)OK$(tput sgr0)]"
 }
 
@@ -192,6 +222,7 @@ for n in "$@"; do
   case "$n" in
     -h|--help) echo "help" ;;
     --init) _DOT_IS_INIT=1 ;;
+    --nvm) _DOT_INSTALL_NVM=1 ;;
     *) ;;
   esac
 done

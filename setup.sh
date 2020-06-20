@@ -12,5 +12,9 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @install Install Vim  Config
   - .vim
+
 @packages
  - init: true
+
+@nvm
+ - install
