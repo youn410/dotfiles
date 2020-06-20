@@ -3,7 +3,7 @@
 prompt_concise_setup() {
   autoload -Uz vcs_info
 
-  zstyle ':vcs_info:*' formats '%b@%s%f: %F{blue}%r/S%f' '%c%u'
+  zstyle ':vcs_info:*' formats '%b@%s%f: %F{blue}%r/%S%f' '%c%u'
   zstyle ':vcs_info:*' enable git
 
   prompt_opts=(cr subst percent)
