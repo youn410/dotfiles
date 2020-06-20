@@ -17,7 +17,7 @@ prompt_concise_precmd() {
 
   vcs_info
   if [[ -n "$vcs_info_msg_0_" ]]; then
-
+    PROMPT="%n@%m %1~ %#" 
   else
     PROMPT="$_begin$_login%n$_hname%f: %F{blue}%~%f"$'\n'"$_prompt%b $_end"
   fi
