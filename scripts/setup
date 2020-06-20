@@ -1,0 +1,197 @@
+#!/bin/bash
+
+DOTFILE_DIR="${DOTFILE_DIR:-$(cd "$(dirname "$BASH_SOURCE:-$0")/.." && pwd)}"
+
+_DOT_LOGFILE="$(mktemp)"
+_DOT_ENABLE_GC=1
+_DOT_GCROOT="$DOTFILE_DIR/.gcroot"
+_DOT_IS_INIT=
+_DOT_LNGLAGS=""
+
+dot::_exit() {
+  if [[ -s "$_DOT_LOGFILE" ]]; then
+    echo "$(tput bold)== Print Logs==$(tput sgr0)"
+    cat "$_DOT_LOGFILE"
+  fi
+  rm "$_DOT_LOGFILE"
+}
+# output log when process is over.
+trap dot::_exit EXIT
+
+# redirect stderr to log file
+exec 2>>"$_DOT_LOGFILE"
+
+############
+#  syntax  #
+############
+
+@packages() {
+  _DOT_SECTION="packages"
+  echo "$(tput bold)== ${*:-Install Files} ==$(tput sgr0)"
+  cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
+}
+
+@install() {
+  _DOT_SECTION="install"
+  echo "$(tput bold)== ${*:-Install Files} ==$(tput sgr0)"
+  cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
+}
+
+@clean() {
+  _DOT_SECTION="clean"
+  echo "$(tput bold)== ${*:-Clean Dead Symlinks} ==$(tput sgr0)"
+  cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
+}
+
+-() {
+  [[ -z "_DOT_SECTION" ]] && return
+  if [[ "$1" =~ .*: ]]; then
+    dot::"${1%:}" "${@:2}"
+    return
+  fi
+
+  case "$_DOT_SECTION" in
+    install) dot::install::task "$@" ;;
+  esac
+}
+
+###########
+#  tasks  #
+###########
+
+dot::init() {
+  case "$1" in
+    true|yes|1) [[ -z "$_DOT_IS_INIT" ]] && dot::skip true ;;
+    false|no|0) return ;;
+    *) dot::_abort "Invalid argument: $1" ;;
+  esac
+}
+
+dot::install::task() {
+  [[ "$#" != 1 ]] && dot::_abort "Wrong number of arguments."
+  [[ "$1" == /* ]] && dot::_abort "Cannot use absolute path."
+
+  echo -n "Installing $1..."
+  if [[ ! -e "$DOTFILE_DIR/home/$1" ]]; then
+    echo "$DOTFILE_DIR/home/$1 does not exist" >&2
+    dot::_print_badge::failed
+    return
+  fi
+
+  local dir="$(dirname "$1")"
+  if [[ -n "$dir" ]] && [[ "$dir" != "." ]]; then
+    [[ ! -d ~/"$dir" ]] && mkdir -p ~/"$dir"
+    pushd ~/"$dir" >/dev/null
+  else
+    pushd ~ >/dev/null
+  fi
+
+  local fname="$(basename "$1")"
+  local src="$DOTFILE_DIR/home/$1"
+  dot::_ln "$(dot::_relative_path "$src")" "$fname"
+
+  dot::_print_badge_ok
+
+  popd
+}
+
+dot::_relative_path() {
+  [[ "$#" != 1 ]] && dot::_abort "Wrong number of arguments."
+  if command -v realpath >/dev/null 2>&1; then
+    realpath --no-symlinks --relative-to=. "$1"
+  elif command -v perl >/dev/null 2>&1; then
+    perl -e "use File::Spec; print File::Spec->abs2rel(\$ARGV[0])" "$1"
+  else
+   dot::_abort "Needs coreutils, python, ruby, or perl."
+  fi
+}
+
+dot::gc() {
+  [[ "$_DOT_SECTION" != "clean" ]] && return
+
+  case "$1" in
+    true|yes|1) [[ -z "$_DOT_CLEAN_GC" ]] && return ;;
+    false|no|0) return ;;
+    *) dot::_abort "Invalid argument: $1" ;;
+  esac
+
+  for root in "$_DOT_GCROOT"/*; do
+    echo $root
+  done
+}
+
+dot::skip() {
+  case "$1" in
+    true|yes|1)
+      [[ -n "$_DOT_SECTION" ]] && echo "Skipping section..."
+     _DOT_SECTION=
+     ;;
+    false|no|0)
+     ;;
+    *)
+      dot::_abort "Invalid argument: $1"
+      ;;
+  esac
+}
+
+#############
+#  helpers  #
+#############
+
+# print an error message and exit
+# Arguments:
+#  error_message
+# Returns:
+#  None
+dot::_abort() {
+  local message=""
+  [[ -n "$1" ]] && message="$1"
+  printf "%s():%s [ABORT] %s\n" "${FUNCNAME[1]}" "${BASH_LINENO[0]}" "$message"
+  exit 1
+} 
+
+# Creates an symlink from $src to $dist
+# Globals:
+#  _DOT_ENABLE_GC
+# Arguments:
+#  src: source path
+#  dst: destination path
+# Returns:
+#  None
+dot::_ln() {
+  [[ "$#" != 2 ]] && dot::_abort "Wrong number of arguments."
+  local src="$1"
+  local dst="$2"
+
+  # install symlink
+  if [[ ! "$dst" -ef "$src" ]]; then
+    ln -sn"$_DOT_LNFLAGS" "$src" "$dst" || return 1
+  fi
+}
+
+dot::_print_badge() {
+  if [[ "$?" == 0 ]]; then
+    dot::_print_badge::ok
+  else
+    dot::_print_badge::failed
+  fi
+}
+
+dot::_print_badge_ok() {
+  echo "[$(tput setaf 2)OK$(tput sgr0)]"
+}
+
+dot::_print_badge::failed() {
+  echo "[$(tput setaf 1)FAILED$(tput sgr0)]"
+}
+
+############################
+#  command line arguments  #
+############################
+for n in "$@"; do
+  case "$n" in
+    -h|--help) echo "help" ;;
+    --init) _DOT_IS_INIT=1 ;;
+    *) ;;
+  esac
+done
