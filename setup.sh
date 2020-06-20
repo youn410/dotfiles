@@ -8,6 +8,7 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @install Install Shell Config
   - .zshrc
+  - .local/share/zsh/site-functions
 
 @install Install Vim  Config
   - .vim
