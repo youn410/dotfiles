@@ -13,8 +13,12 @@ source "$DOTFILE_DIR/scripts/setup"
 @install Install Vim  Config
   - .vim
 
+@install Install Miscellaneous Config
+  - .tmux.conf
+
 @packages
  - init: true
 
+# The below will not run unless --nvm is specified
 @nvm
  - install
