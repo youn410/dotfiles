@@ -3,5 +3,30 @@
 """""""""""""
 set encoding=utf-8
 set expandtab
+set smarttab
 set shiftwidth=2
 set softtabstop=2
+set autoindent
+set copyindent
+set preserveindent
+
+""""""""
+"  UI  "
+""""""""
+set hidden
+set colorcolumn=81
+set number
+set ruler
+set showcmd
+set noshowmode
+set listchars=tab:>\ ,trail:-,nbsp:+
+set cmdheight=1
+set laststatus=2
+set display=lastline
+set lazyredraw
+set showmatch
+set wildmenu
+set wildignorecase
+set nofoldenable
+set title
+set mouse=a
