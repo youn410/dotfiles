@@ -1,3 +1,13 @@
+""""""""""""""""""""
+"  Initialization  "
+""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
+
+Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
+
+" filetype plugin indent and syntax is handled by plug#end
+call plug#end()
+
 """""""""""""
 "  Editing  "
 """""""""""""

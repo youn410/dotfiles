@@ -12,6 +12,9 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @install Install Vim  Config
   - .vim
+  - download: \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+      ~/.vim/autoload/plug.vim
 
 @install Install Miscellaneous Config
   - .tmux.conf
