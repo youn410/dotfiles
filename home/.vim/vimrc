@@ -40,3 +40,15 @@ set wildignorecase
 set nofoldenable
 set title
 set mouse=a
+
+"""""""""""""""""
+"  Keybindings  "
+"""""""""""""""""
+let mapleader="\<Space>"
+nnoremap <Space> \
+
+" NERDTreeFind
+nnoremap <silent> <Leader>ff :NERDTreeFind<CR>
+
+" toggles
+nnoremap <silent> <Leader>tf :NERTDTreeToggle<CR>
