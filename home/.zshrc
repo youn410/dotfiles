@@ -1,3 +1,8 @@
+# in ~/.zshenv, executed `unsetopt GLOBAL_RCS`
+# and ignored /etc/zshrc, /etc/zlogin
+[ -r /etc/zshrc ] && . /etc/zshrc
+[ -r /etc/zlogin ] && . /etc/zlogin
+
 fpath+=(~/.local/share/zsh/site-functions)
 autoload -Uz add-zsh-hook
 
@@ -7,7 +12,8 @@ autoload -Uz add-zsh-hook
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias ls='ls -lh'
+alias ls='ls -F --color=auto'
+alias ll='ls -lh'
 alias la='ls -lAh'
 
 autoload -Uz promptinit && promptinit
