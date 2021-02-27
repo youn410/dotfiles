@@ -7,6 +7,15 @@ dotfiles for my personal use.
 ### Step 2: Checkout the relevant branch
 
 ## Setup
+### Install dependencies
+TODO: Install brew
+```
+
+```
+```
+$ brew install coreutils
+```
+
 ```
 $ cd ~/.config/dotfiles
 $ git pull
