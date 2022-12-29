@@ -1,5 +1,7 @@
-.PHONY: build
+.PHONY: setup test
 
-build:
-	echo "Building..."
-	hostname
+setup:
+	./setup.sh
+
+test:
+	./test/setup.test.sh

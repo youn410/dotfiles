@@ -1,0 +1,20 @@
+#!/bin/bash
+
+setup() {
+  local dotfile_name=$1
+  [[ ! $# == 1 ]] && error_setup_skip "${dotfile_name}" "Target dotfile should be one. Provided is $@" && return
+  [[ ! "${dotfile_name}" =~ ^\..*$ ]] && error_setup_skip "${dotfile_name}" "Target dotfile should start with ." && return
+  [[ ! -f "${HOME_DIR}/${dotfile_name}" ]] && error_setup_skip "No ${dotfile_name} in ${HOME_DIR}" && return
+}
+
+error_exit() {
+  printf '%s\n' "$1" >&2
+  exit "${2:-1}"
+}
+
+success_setup() {
+  echo "[OK] $1"
+}
+error_setup_skip() {
+  echo "[NG] $1 ($2)"
+}
