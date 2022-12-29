@@ -1,10 +1,17 @@
 #!/bin/bash
 
-setup() {
+link_file() {
   local dotfile_name=$1
-  [[ ! $# == 1 ]] && error_setup_skip "${dotfile_name}" "Target dotfile should be one. Provided is $@" && return
-  [[ ! "${dotfile_name}" =~ ^\..*$ ]] && error_setup_skip "${dotfile_name}" "Target dotfile should start with ." && return
-  [[ ! -f "${HOME_DIR}/${dotfile_name}" ]] && error_setup_skip "No ${dotfile_name} in ${HOME_DIR}" && return
+
+  # TODO: validate $dotfile_name
+  [[ ! -f "${HOME_DIR}/${dotfile_name}" ]] && error_setup_skip "${dotfile_name}" "Not in ${HOME_DIR}" && return
+
+  pushd ~ >/dev/null
+  # ln -s /path/to/dotfiles/home/.dotfile .dotfile
+  ln -fns "${HOME_DIR}/${dotfile_name}" "${dotfile_name}"
+  popd >/dev/null
+
+  success_setup "${dotfile_name}"
 }
 
 error_exit() {
@@ -13,8 +20,9 @@ error_exit() {
 }
 
 success_setup() {
-  echo "[OK] $1"
+  echo "[$(tput -Tscreen-256color setaf 2)OK$(tput -Tscreen-256color sgr0)] $1"
 }
+
 error_setup_skip() {
-  echo "[NG] $1 ($2)"
+  echo "[$(tput -Tscreen-256color setaf 1)NG$(tput -Tscreen-256color sgr0)] $1 ($2)"
 }
