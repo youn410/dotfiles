@@ -11,10 +11,11 @@ source "${UTILS_SCRIPT}"
 [[ -d "${HOME_DIR}" ]] || error_exit "No ${HOME_DIR}"
 [[ -d "${CONF_DIR}" ]] || error_exit "No ${CONF_DIR}"
 
+echo "# Link dotfiles..."
 [[ -f "${CONF_DIR}/dotfile_list" ]] || error_exit "No ${CONF_DIR}/dotfile_list"
 while read dotfile_name
 do
-  echo "${dotfile_name}"
+  link_file "${dotfile_name}"
 done < "${CONF_DIR}/dotfile_list"
 
-echo "dotfiles has been set up successfuly."
+echo "# dotfiles has been set up successfuly."
