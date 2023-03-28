@@ -1,0 +1,143 @@
+# vim: filetype=zsh
+
+emulate -L zsh
+
+zmodload -i zsh/parameter
+
+# find and load upstream fzf widgets
+local searchpath
+if ! zstyle -s ':dotfiles:fzf' script-dir searchpath; then
+  searchpath=(
+    ~/.fzf.zsh
+  )
+fi
+
+local f is_found=0
+for f in "$searchpath[@]"; do
+  if [[ "$f" == *.zsh && -f "$f" ]]; then
+    {
+      function bindkey () {} # don't let fzf change the shell keybindings
+      source "$f"
+    } always {
+      unfunction bindkey
+    }
+  fi
+
+  is_found=1
+  break
+done
+
+if (( ! is_found )); then
+  local loglevel='WARN'
+  
+  zle -M "[$loglevel] fzf-widgets: The directory containing the stock FZF were not detected."
+  return 1
+fi
+
+# additional functions
+
+dot::ensure_cwd_is_git_repo() {
+  if ! git rev-parse --is-inside-git-dir &> /dev/null; then
+    zle reset-prompt
+    zle -M '[ERROR] fzf-widgets: Not in a Git repo'
+    return 1
+  fi
+}
+
+dot::fzf() {
+  local -a args
+  if ! zstyle -a ':dotfiles:fzf' default-args args; then
+    args=(
+      "--height" "${FZF_TMUX_HEIGHT:-40%}"
+      "--reverse"
+      "--bind" "ctrl-/:toggle-preview"
+      "$FZF_DEFAULT_OPTS"
+    )
+  fi
+  FZF_DEFAULT_OPTS="${(j: :)args}" $(__fzfcmd) "$@"
+}
+
+# WIDGETs
+
+fzf-git-branch-widget() {
+  emulate -L zsh
+  setopt localoptions pipefail no_ailiases 2> /dev/null
+
+  dot::ensure_cwd_is_git_repo || return
+
+  local selected
+  local fmt='format:%C(auto)%cd %h%d %s'
+  local opts="--oneline --graph --date=short --color=always --pretty=${(q)fmt}"
+  local preview="git log ${opts} \$(sed s/^..// <<< {} | cut -d' ' -f1)"
+
+  git branch -a --color=always \
+    | grep -v '/HEAD\s' \
+    | sort \
+    | dot::fzf -m --ansi --tac \
+        --preview-window right:'70%' --preview "$preview" \
+    | sed 's/^..//' \
+    | cut -d' ' -f1 \
+    | sed 's#^remotes/##' \
+    | IFS= read -r -d '' selected
+    
+  if [[ -n "$selected" ]]; then
+    LBUFFER+="${(j: :)${(@q)${(f)selected}}}"
+  fi
+  zle reset-prompt
+}
+
+fzf-hostname-widget() {
+  emulate -L zsh
+  setopt localoptions pipefail no_ailiases 2> /dev/null
+
+  _fzf_complete_ssh "$LBUFFER"
+
+  zle reset-prompt
+}
+
+fzf-menu-widget() {
+  local selected
+  dot::fzf +m <<EOF | awk '{ print $NF}' | IFS= read -r selected
+Hostnames     : fzf-hostname-widget
+Shell history : fzf-history-widget
+EOF
+
+  if [[ -n "$selected"  ]]; then
+    zle "$selected"
+  else
+    zle reset-prompt
+  fi
+}
+
+fzf-tmux-session-widget() {
+  emulate -L zsh
+  setopt localoptions pipefail no_ailiases 2> /dev/null
+
+  local session
+
+  tmux ls \
+    | awk -F'[:]' '{print $1}' \
+    | dot::fzf +m \
+    | IFS= read -r session
+  
+  if [[ -n "$session" ]]; then
+    LBUFFER+="${(j: :)${(@q)${(f)session}}}"
+  fi
+  zle reset-prompt
+}
+
+zle -N fzf-hostname-widget
+zle -N fzf-menu-widget
+zle -N fzf-git-branch-widget
+zle -N fzf-tmux-session-widget
+
+default-fzf-widgets() {
+  zle -M "[ERROR] fzf-widgets: unknown widget '$WIDGET'"
+}
+
+if [[ "$1" == 'init' ]]; then
+  # To initialize fzf-widgets
+  return
+elif zle; then
+  zle "${WIDGET:-default-fzf-widgets}"
+fi
