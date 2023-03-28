@@ -1,0 +1,9 @@
+# vim: filetype=zsh
+
+emulate -L zsh
+
+mv-cursor-beginning-of-line() {
+  CURSOR=0
+}
+
+mv-cursor-beginning-of-line

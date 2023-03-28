@@ -1,0 +1,30 @@
+# vim: filetype=zsh
+
+prompt_concise_setup() {
+  autoload -Uz vcs_info
+
+  # <branch>@<VCS in use>: <repository name>/<sub directory>
+  zstyle ':vcs_info:*' formats '%b@%s: %F{blue}%r/%S%f'
+  zstyle ':vcs_info:*' enable git
+
+  prompt_opts=(cr subst percent)
+  add-zsh-hook precmd prompt_concise_precmd
+}
+
+prompt_concise_precmd() {
+  local _prompt="%(?::%F{red})%#%f"
+  local _login="%B%(!:%F{red}:)"
+  local _hname=""
+
+  local _begin=
+  local _end=
+
+  vcs_info
+  if [[ -n "$vcs_info_msg_0_" ]]; then
+    PROMPT="$_begin$_login$vcs_info_msg_0_"$'\n'"$_prompt%b $_end"
+  else
+    PROMPT="$_begin$_login%n$_hname%f: %F{blue}%~%f"$'\n'"$_prompt%b $_end"
+  fi
+}
+
+prompt_concise_setup "$@"
