@@ -1,8 +1,4 @@
 name: dotfiles CI
-on:
-  pull_request:
-    branches:
-      - main
 jobs:
   test:
     runs-on: macos-12
