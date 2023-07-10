@@ -1,0 +1,76 @@
+""""""""""""""""""""
+"  Initialization  "
+""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
+
+Plug 'preservim/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
+
+" filetype plugin indent and syntax is handled by plug#end
+call plug#end()
+
+"""""""""""""
+"  Editing  "
+"""""""""""""
+set encoding=utf-8
+set expandtab
+set smarttab
+set shiftwidth=2
+set softtabstop=2
+set autoindent
+set copyindent
+set preserveindent
+
+""""""""
+"  UI  "
+""""""""
+set hidden
+set colorcolumn=120
+set number
+set ruler
+set showcmd
+set noshowmode
+set listchars=tab:>\ ,trail:-,nbsp:+
+set cmdheight=1
+set laststatus=2
+set display=lastline
+set lazyredraw
+set showmatch
+set wildmenu
+set wildignorecase
+set nofoldenable
+set title
+set mouse=a
+set virtualedit=onemore
+set clipboard=unnamed,autoselect
+
+let NERDTreeShowHidden = 1
+let NERDTreeIgnore = ['\.swp', '\.pyc', 'node_modules']
+
+""""""""""""
+"  Search  "
+""""""""""""
+set hlsearch " highlighting of search matches
+set ignorecase " case insensitive
+set incsearch " incremental search
+set smartcase " Override the ignorecase option if the search pattern contains upper case characters
+set wrapscan " Searches wrap around the end of the file
+
+"""""""""""""""""
+"  Keybindings  "
+"""""""""""""""""
+let mapleader="\<Space>"
+nnoremap <Space> \
+
+" Disable Ctrl-q. use Ctrl-v
+map <C-q> <Nop>
+
+" NERDTreeFind
+nnoremap <silent> <Leader>ff :NERDTreeFind<CR>
+
+" toggles
+nnoremap <silent> <Leader>tf :NERDTreeToggle<CR>
+
+"""""""""""""""""""
+"  Auto Commands  "
+"""""""""""""""""""
+autocmd VimEnter * :NERDTreeToggle | wincmd p
