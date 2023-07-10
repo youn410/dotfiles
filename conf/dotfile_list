@@ -1,6 +1,7 @@
 .bashrc
 .config/git/config
 .local/share/zsh/site-functions
+.tmux.conf
 .vim
 .zlogout
 .zshenv
