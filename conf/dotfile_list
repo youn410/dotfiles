@@ -1,2 +1,3 @@
 .bashrc
 .zshrc
+.local/share/zsh/site-functions
