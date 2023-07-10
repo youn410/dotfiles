@@ -1,4 +1,6 @@
 .bashrc
 .config/git/config
 .local/share/zsh/site-functions
+.zlogout
+.zshenv
 .zshrc
