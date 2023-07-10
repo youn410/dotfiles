@@ -1,0 +1,49 @@
+[alias]
+  dt = difftool --no-symlinks --dir-diff
+  gr = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+  st = status
+  stt = status -uno
+
+[core]
+  pager = delta
+
+[delta]
+  line-numbers = true
+  max-line-length = 0
+  navigate = true
+  side-by-side = true
+
+[diff]
+  algorithm = histogram
+  colorMethod = dimmed-zebra
+
+[difftool]
+  prompt = false
+  trustExitCode = true
+
+[difftool "kitty"]
+  cmd = kitty +kitten diff $LOCAL $REMOTE
+
+[difftool "kitty.gui"]
+  cmd = kitty kitty +kitten diff $LOCAL $REMOTE
+
+[ghq]
+  root = ~/Documents/vcs
+
+[include]
+  path = ~/.config/git/user
+
+[interactive]
+  diffFilter = delta --color-only
+
+[merge]
+  tool = vimdiff
+
+[pull]
+  ff = only
+
+[push]
+  default = simple
+
+[rebase]
+  autosquash = true
