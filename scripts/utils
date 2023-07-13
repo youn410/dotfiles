@@ -16,6 +16,43 @@ link_file() {
   success_setup "${dotfile_name}"
 }
 
+install_fzf() {
+  pushd ~ >/dev/null
+
+  # TODO: switch options according to shell
+  ! .fzf/install --all --no-bash --no-fish 2>&1 >/dev/null \
+    && error_setup_skip "fzf" "failed to install" \
+    && popd >/dev/null && return # TODO: pass error message
+
+  # remove last sentence '[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
+  local rcfile="${HOME_DIR}/.zshrc"
+  perl -ni -e 'print unless /\[ \-f \~\/\.fzf\.zsh \] && source \~\/\.fzf\.zsh/' $rcfile
+   [[ -z $(tail -1 $rcfile) ]] && perl -ni -e 'print unless eof' $rcfile
+
+  popd >/dev/null
+  success_setup ".fzf"
+}
+
+install_nvm() {
+  local nvmdir="$HOME_DIR/.nvm"
+  pushd $nvmdir >/dev/null
+  pwd
+
+  git fetch --tags origin
+  git checkout \
+    `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+
+  source "$nvmdir/nvm.sh"
+
+  if ! command -v nvm >/dev/null; then
+    error_setup_skip "nvm" "failed to install"
+    popd >/dev/null && return
+  fi
+
+  popd >/dev/null
+  success_setup ".nvm"
+}
+
 error_exit() {
   printf '%s\n' "$1" >&2
   exit "${2:-1}"
