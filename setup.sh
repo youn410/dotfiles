@@ -20,5 +20,6 @@ done < "${CONF_DIR}/dotfile_list"
 
 echo "# Run install scripts..."
 install_fzf
+install_nvm
 
 echo "# dotfiles has been set up successfuly."
