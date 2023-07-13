@@ -1,5 +1,6 @@
 .bashrc
 .config/git/config
+.fzf
 .local/share/zsh/site-functions
 .tmux.conf
 .vim

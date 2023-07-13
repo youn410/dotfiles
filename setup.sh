@@ -18,4 +18,7 @@ do
   link_file "${dotfile_name}"
 done < "${CONF_DIR}/dotfile_list"
 
+echo "# Run install scripts..."
+install_fzf
+
 echo "# dotfiles has been set up successfuly."

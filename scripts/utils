@@ -16,6 +16,24 @@ link_file() {
   success_setup "${dotfile_name}"
 }
 
+install_fzf() {
+  pushd ~ >/dev/null
+
+  # TODO: switch options according to shell
+  ! .fzf/install --all --no-bash --no-fish 2>&1 >/dev/null \
+    && error_setup_skip "fzf" "failed to install" \
+    && popd >/dev/null && return # TODO: pass error message
+
+  # remove last sentence '[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
+  local rcfile="${HOME_DIR}/.zshrc"
+  perl -ni -e 'print unless /\[ \-f \~\/\.fzf\.zsh \] && source \~\/\.fzf\.zsh/' $rcfile
+   [[ -z $(tail -1 $rcfile) ]] && perl -ni -e 'print unless eof' $rcfile
+
+  popd >/dev/null
+
+  success_setup ".fzf"
+}
+
 error_exit() {
   printf '%s\n' "$1" >&2
   exit "${2:-1}"
