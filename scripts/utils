@@ -52,6 +52,15 @@ install_nvm() {
   success_setup ".nvm"
 }
 
+install_vim_plug() {
+  pushd ~ >/dev/null
+
+  vim -es -u ./vim/vimrc -i NONE -c "PlugInstall" -c "qa"
+
+  popd >/dev/null
+  success_setup "vim-plug"
+}
+
 error_exit() {
   printf '%s\n' "$1" >&2
   exit "${2:-1}"
