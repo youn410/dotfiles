@@ -1,0 +1,16 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker build -t dotfiles-setup-trial:0.0.1 .
+    silent: true
+  build-nocache:
+    cmds:
+      - docker build --no-cache -t dotfiles-setup-trial:0.0.1 .
+    silent: true
+
+  run:
+    cmds:
+      - docker container run -it --rm -v $(cd .. && pwd):/tmp/dotfiles dotfiles-setup-trial:0.0.1
+    silent: true
