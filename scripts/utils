@@ -36,10 +36,9 @@ install_fzf() {
 install_nvm() {
   local nvmdir="$HOME_DIR/.nvm"
   pushd $nvmdir >/dev/null
-  pwd
 
   git fetch --tags origin
-  git checkout \
+  git checkout --quiet \
     `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
 
   source "$nvmdir/nvm.sh"
@@ -51,6 +50,15 @@ install_nvm() {
 
   popd >/dev/null
   success_setup ".nvm"
+}
+
+install_vim_plug() {
+  pushd ~ >/dev/null
+
+  vim -es -u ./vim/vimrc -i NONE -c "PlugInstall" -c "qa"
+
+  popd >/dev/null
+  success_setup "vim-plug"
 }
 
 error_exit() {
