@@ -41,8 +41,28 @@ setopt share_history
 # Completion #
 #============#
 zmodload -i zsh/complist
-autoload -Uz compinit
-zstyle ':completion:*' menu select
+
+# The option EXTENDED_GLOB is set locally
+() {
+  # make different syntax for glob qualifiers available, namely ‘(#qx)’ 
+  setopt localoptions extended_glob
+  autoload -Uz compinit
+
+  zstyle ':completion:*' menu select
+
+  # update the completion cache only once a day
+  # check cached .zcompdump file once a day to restrict delay to zsh startup
+  # - '#q' is intended to support the use of glob qualifiers
+  # - 'N' deletes the pattern instead of reporting an error when it doesn't match
+  # - '.' matches plain files
+  # - 'mh+24' matches files that are older than 24 hours
+  # cf. https://zsh.sourceforge.io/Doc/Release/Expansion.html#Glob-Qualifiers
+  if [[ -n ~/.cache/zsh/compdump(#qN.mh+24) ]]; then
+    compinit -u -d ~/.cache/zsh/compdump && touch ~/.cache/zsh/compdump
+  else
+    compinit -C -d ~/.cache/zsh/compdump
+  fi
+}
 
 # =============#
 # Key Bindings #
