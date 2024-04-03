@@ -75,3 +75,8 @@ nnoremap <silent> <Leader>tf :NERDTreeToggle<CR>
 """""""""""""""""""
 autocmd VimEnter * :NERDTreeToggle | wincmd p
 autocmd Filetype typescript setl re=0 " vim hangs when ts file is opend if re=1 (default)
+augroup HighlightTrailingSpaces
+  autocmd!
+  autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
+  autocmd VimEnter,WinEnter,ColorScheme * match TrailingSpaces /\s\+$/
+augroup END
