@@ -100,6 +100,8 @@ autoload -Uz promptinit && promptinit
 prompt concise
 unsetopt prompt_cr
 
+unsetopt nomatch # Do not raise error when glob can not be expanded
+
 ###############
 #  loads nvm  #
 ###############
