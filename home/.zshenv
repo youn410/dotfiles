@@ -15,11 +15,13 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 path=(
+  /usr/local/bin
   /usr/local/opt/coreutils/libexec/gnubin(N-/) # coreutils
   ${path}
 )
 
 manpath=(
+  /usr/local/bin
   /usr/local/opt/coreutils/libexec/gnuman(N-/) # coreutils
   ${manpath}
 )
