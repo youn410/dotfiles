@@ -3,7 +3,7 @@
   gr = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
   st = status
   stt = status -uno
-  ddiff = GIT_CONFIG_NOSYSTEM=1 HOME=/tmp git diff ; default git diff (git diff without global config)
+  ddiff = !GIT_CONFIG_NOSYSTEM=1 HOME=/tmp git diff ; default git diff (git diff without global config)
 
 [core]
   pager = delta
