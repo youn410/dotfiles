@@ -15,3 +15,8 @@ git worktree add ~/.dotfiles local
 pushd ~/.dotfiles
 ./setup.sh
 ```
+
+### Bootstrap Nix home-manager
+```
+nix run nixpkgs#home-manager -- switch --flake .#myHomeConfig
+```
