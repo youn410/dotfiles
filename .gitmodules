@@ -1,6 +1,3 @@
-[submodule "home/.fzf"]
-	path = home/.fzf
-	url = https://github.com/junegunn/fzf.git
 [submodule "home/.nvm"]
 	path = home/.nvm
 	url = https://github.com/nvm-sh/nvm.git

@@ -22,7 +22,10 @@ in {
       fzf
       git
       neovim
-      volta
+      gnused
+      gnugrep
+      gawk
+      watch
     ];
 
     stateVersion = "24.05";

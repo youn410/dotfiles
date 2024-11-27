@@ -1,6 +1,5 @@
 .bashrc
 .config/git/config
-.fzf
 .local/share/zsh/site-functions
 .nvm
 .tmux.conf

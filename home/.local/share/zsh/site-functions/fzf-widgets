@@ -29,7 +29,7 @@ done
 
 if (( ! is_found )); then
   local loglevel='WARN'
-  
+
   zle -M "[$loglevel] fzf-widgets: The directory containing the stock FZF were not detected."
   return 1
 fi
