@@ -102,6 +102,12 @@ unsetopt prompt_cr
 
 unsetopt nomatch # Do not raise error when glob can not be expanded
 
+#########
+#  fzf  #
+#########
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
 ###############
 #  loads nvm  #
 ###############

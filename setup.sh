@@ -19,7 +19,6 @@ do
 done < "${CONF_DIR}/dotfile_list"
 
 echo "# Run install scripts..."
-install_fzf
 install_nvm
 install_vim_plug
 
