@@ -18,13 +18,16 @@ in {
     homeDirectory = "/Users/${username}";
 
     packages = with pkgs; [
+      coreutils
       curl
+      delta
       fzf
       git
       neovim
       gnused
       gnugrep
       gawk
+      tmux
       watch
     ];
 
