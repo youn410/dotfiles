@@ -4,6 +4,9 @@
 fpath+=(~/.local/share/zsh/site-functions)
 autoload -Uz add-zsh-hook
 
+# https://direnv.net/docs/hook.html#zsh
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
 # Alias
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -44,7 +47,7 @@ zmodload -i zsh/complist
 
 # The option EXTENDED_GLOB is set locally
 () {
-  # make different syntax for glob qualifiers available, namely ‘(#qx)’ 
+  # make different syntax for glob qualifiers available, namely ‘(#qx)’
   setopt localoptions extended_glob
   autoload -Uz compinit
 
