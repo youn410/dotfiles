@@ -28,6 +28,7 @@ in {
       gnugrep
       gawk
       tmux
+      tree
       watch
     ];
 
