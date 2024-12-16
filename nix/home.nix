@@ -30,6 +30,7 @@ in {
       tmux
       tree
       watch
+      wget
     ];
 
     stateVersion = "24.05";
