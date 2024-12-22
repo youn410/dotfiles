@@ -24,6 +24,7 @@ in {
       fzf
       git
       neovim
+      nerd-fonts.hack
       gnused
       gnugrep
       gawk
