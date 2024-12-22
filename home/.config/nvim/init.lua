@@ -101,6 +101,12 @@ vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "ColorScheme" }, {
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Setup lazy.nvim
+require("lazy").setup({
+  spec = { import = "plugins" },
+  checker = { enabled = true },
+})
+
 -- go to next modified buffer
 vim.keymap.set("n", "<Leader>b", "<Cmd>bmodified<CR>")
 -- find merge conflict marker
