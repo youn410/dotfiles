@@ -129,6 +129,8 @@ vim.keymap.set("o", "ag", [[<Cmd>exe "normal! m`"<Bar>keepjumps normal! ggVG<CR>
 vim.keymap.set("n", "<Leader>ts", "<Cmd>setlocal spell! spell?<CR>")
 -- show the line number relative to the current line
 vim.keymap.set("n", "<Leader>t#", "<Cmd>setlocal relativenumber! relativenumber?<CR>")
+-- open or close nvim tree
+vim.keymap.set("n", "<Leader>tt", "<Cmd>NvimTreeToggle<CR>")
 
 -- }}}
 
