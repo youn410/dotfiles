@@ -2,7 +2,7 @@
   description = "Nix configuration for dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +34,7 @@
 
     homeConfigurations = {
       myHomeConfig = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+        pkgs = pkgs;
 
         extraSpecialArgs = {
           inherit inputs;
