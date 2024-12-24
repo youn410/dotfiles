@@ -1,6 +1,7 @@
 .bashrc
 .config/git/config
 .config/nvim/init.lua
+.config/nvim/lua/plugins
 .local/share/zsh/site-functions
 .nvm
 .tmux.conf
