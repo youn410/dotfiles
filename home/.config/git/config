@@ -6,6 +6,7 @@
   ddiff = !GIT_CONFIG_NOSYSTEM=1 HOME=/tmp git diff ; default git diff (git diff without global config)
 
 [core]
+  editor = nvim
   pager = delta
 
 [delta]
