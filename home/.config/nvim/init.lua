@@ -104,7 +104,10 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = { import = "plugins" },
-  checker = { enabled = true },
+  checker = {
+    enabled = true,
+    frequency = 86400, -- check for updates once a day
+  },
 })
 
 -- go to next modified buffer
