@@ -126,6 +126,9 @@ vim.keymap.set("o", "il", "<Cmd>normal! ^vg_<CR>")
 vim.keymap.set("x", "ag", "gg0oG$")
 --- select the entire file while preserving the cursor in Operator-pending mode
 vim.keymap.set("o", "ag", [[<Cmd>exe "normal! m`"<Bar>keepjumps normal! ggVG<CR>]])
+--- yank to system clipboard
+vim.keymap.set("n", "y", '"+y', { noremap = true, silent = true })
+vim.keymap.set("v", "y", '"+y', { noremap = true, silent = true })
 
 -- toggles
 --- spell checking
