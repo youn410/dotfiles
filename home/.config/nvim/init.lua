@@ -95,6 +95,17 @@ vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "ColorScheme" }, {
   end,
 })
 
+-- Tab per FileType
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "go",
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    vim.bo.expandtab = true
+  end,
+})
+
 -- }}}
 -- {{{ Keybindings
 
