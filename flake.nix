@@ -17,10 +17,10 @@
     home-manager,
     ...
   } @ inputs: let
-    system = "x86_64-darwin";
-    pkgs = import nixpkgs { inherit system; };
+    cfg = import ./nix/config.nix;
+    pkgs = import nixpkgs { system = cfg.system; };
   in {
-    apps.${system}.update = {
+    apps.${cfg.system}.update = {
       type = "app";
       program = toString (pkgs.writeShellScript "update-script" ''
         set -e
@@ -38,6 +38,7 @@
 
         extraSpecialArgs = {
           inherit inputs;
+          dotfilesConfig = cfg;
         };
 
         modules = [ ./nix/home.nix ];

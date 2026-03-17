@@ -1,11 +1,12 @@
 {
   inputs,
+  dotfilesConfig,
   lib,
   config,
   pkgs,
   ...
 }: let
-  username = "nomu";
+  username = dotfilesConfig.user.name;
 in {
   nixpkgs = {
     overlays = [
@@ -15,7 +16,7 @@ in {
 
   home = {
     inherit username;
-    homeDirectory = "/Users/${username}";
+    homeDirectory = dotfilesConfig.user.homeDirectory;
 
     packages = with pkgs; [
       coreutils
