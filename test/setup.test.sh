@@ -1,8 +1,8 @@
 echo "===== TEST setup.sh ====="
 
-no_scripts_utils() {
-  echo "[TEST] No scripts/utils"
-  rm scripts/utils
+no_lib() {
+  echo "[TEST] No scripts/lib/setup.sh"
+  rm scripts/lib/setup.sh
 
   ./setup.sh
   [[ $? == 1 ]] || exit 1
@@ -10,50 +10,29 @@ no_scripts_utils() {
   git restore scripts
 }
 
-no_home() {
-  echo "[TEST] No home/"
-  rm -r home
+no_files() {
+  echo "[TEST] No files/"
+  rm -r files
 
   ./setup.sh
   [[ $? == 1 ]] || exit 1
 
-  git restore home
-}
-
-no_conf() {
-  echo "[TEST] No conf/"
-  rm -r conf
-
-  ./setup.sh
-  [[ $? == 1 ]] || exit 1
-
-  git restore conf
-}
-
-no_conf_dotfile_list() {
-  echo "[TEST] No conf/dotfile_list"
-  rm conf/dotfile_list
-
-  ./setup.sh
-  [[ $? == 1 ]] || exit 1
-
-  git restore conf
+  git restore files
 }
 
 fail_in_link_file() {
-  echo '[TEST] Fail in link_file'
-  cat << EOF > ./conf/dotfile_list
-.bashrc
-.not_in_home
-EOF
-
+  echo '[TEST] Fail in link_file (not in files/)'
   ./setup.sh
-
-  git restore conf
+  # .not_in_files is not in files/, so link_file should show NG but not exit 1
 }
 
-no_scripts_utils
-no_home
-no_conf
-no_conf_dotfile_list
+uninstall_removes_links() {
+  echo '[TEST] uninstall removes symlinks'
+  ./setup.sh
+  ./setup.sh uninstall
+}
+
+no_lib
+no_files
 fail_in_link_file
+uninstall_removes_links
