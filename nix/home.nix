@@ -1,48 +1,21 @@
 {
-  inputs,
-  lib,
-  config,
-  pkgs,
+  dotfilesConfig,
   ...
-}: let
-  username = "nomu";
-in {
-  nixpkgs = {
-    overlays = [
-      inputs.neovim-nightly-overlay.overlays.default
-    ];
-  };
+}: {
+  imports = [
+    ./modules/base.nix
+    ./modules/direnv.nix
+    ./modules/git.nix
+    ./modules/mise.nix
+    ./modules/neovim.nix
+    ./modules/tmux.nix
+    ./modules/zsh.nix
+  ];
 
   home = {
-    inherit username;
-    homeDirectory = "/Users/${username}";
-
-    packages = with pkgs; [
-      coreutils
-      curl
-      delta
-      fzf
-      git
-      neovim
-      nerd-fonts.hack
-      gnused
-      gnugrep
-      gawk
-      tmux
-      tree
-      watch
-      wget
-    ];
-
+    username = dotfilesConfig.user.name;
+    homeDirectory = dotfilesConfig.user.homeDirectory;
     stateVersion = "24.05";
-  };
-
-  programs = {
-    # https://github.com/nix-community/nix-direnv
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
   };
 
   # Let Home Manager install and manage itself.
