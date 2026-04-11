@@ -43,5 +43,5 @@ pushd ~/.dotfiles
 ### Bootstrap Nix home-manager
 
 ```sh
-nix run nixpkgs#home-manager -- switch --flake .#myHomeConfig
+nix run nixpkgs#home-manager -- switch --flake . --impure
 ```
