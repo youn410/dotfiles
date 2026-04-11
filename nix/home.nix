@@ -6,6 +6,7 @@
     ./modules/base.nix
     ./modules/direnv.nix
     ./modules/git.nix
+    ./modules/mise.nix
     ./modules/neovim.nix
     ./modules/tmux.nix
     ./modules/zsh.nix

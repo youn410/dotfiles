@@ -62,25 +62,6 @@ _unlink_file() {
   popd >/dev/null
 }
 
-install_nvm() {
-  local nvmdir="${FILES_DIR}/.nvm"
-  pushd "$nvmdir" >/dev/null
-
-  git fetch --tags origin
-  git checkout --quiet \
-    `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
-
-  source "$nvmdir/nvm.sh"
-
-  if ! command -v nvm >/dev/null; then
-    error_setup_skip "nvm" "failed to install"
-    popd >/dev/null && return
-  fi
-
-  popd >/dev/null
-  success_setup ".nvm"
-}
-
 install_vim_plug() {
   pushd ~ >/dev/null
   vim -es -u .vim/vimrc -i NONE -c "PlugInstall" -c "qa"

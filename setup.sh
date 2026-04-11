@@ -41,12 +41,8 @@ link_file .config/nvim/lua/plugins
 # tmux config
 link_file .tmux.conf
 
-# nvm
-link_file .nvm
-
 if [[ "${UNINSTALL}" -ne 1 ]]; then
   echo "# Running install scripts..."
-  install_nvm
   install_vim_plug
 fi
 
