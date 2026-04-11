@@ -7,42 +7,48 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
-    cfg = import ./nix/config.nix;
-    pkgs = import nixpkgs { system = cfg.system; };
-  in {
-    apps.${cfg.system}.update = {
-      type = "app";
-      program = toString (pkgs.writeShellScript "update-script" ''
-        set -e
-        echo "Updating flake..."
-        nix flake update
-        echo "Updating home-manager..."
-        nix run nixpkgs#home-manager -- switch --flake .#myHomeConfig
-        echo "Update complete!"
-      '');
-    };
+  outputs = { flake-parts, ... } @ inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
 
-    homeConfigurations = {
-      myHomeConfig = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgs;
-
-        extraSpecialArgs = {
-          inherit inputs;
-          dotfilesConfig = cfg;
+      perSystem = { pkgs, ... }: {
+        apps.update = {
+          type = "app";
+          program = toString (pkgs.writeShellScript "update-script" ''
+            set -e
+            echo "Updating flake..."
+            nix flake update
+            echo "Updating home-manager..."
+            nix run nixpkgs#home-manager -- switch --flake .#myHomeConfig
+            echo "Update complete!"
+          '');
         };
+      };
 
-        modules = [ ./nix/home.nix ];
+      flake = {
+        homeConfigurations = let
+          cfg = import ./nix/config.nix;
+        in {
+          myHomeConfig = inputs.home-manager.lib.homeManagerConfiguration {
+            pkgs = import inputs.nixpkgs { system = cfg.system; };
+            extraSpecialArgs = {
+              inherit inputs;
+              dotfilesConfig = cfg;
+            };
+            modules = [ ./nix/home.nix ];
+          };
+        };
       };
     };
-  };
 }
