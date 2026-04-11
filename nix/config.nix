@@ -1,8 +1,9 @@
-{
+let
+  username = builtins.getEnv "USER";
+  homeDir = builtins.getEnv "HOME";
+in {
   user = {
-    name = "nomu";
-    homeDirectory = "/Users/nomu";
+    name = username;
+    homeDirectory = homeDir;
   };
-
-  system = "x86_64-darwin";
 }
