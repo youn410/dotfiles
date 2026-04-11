@@ -22,7 +22,9 @@
         "aarch64-darwin"
       ];
 
-      perSystem = { pkgs, ... }: {
+      perSystem = { pkgs, ... }: let
+        cfg = import ./nix/config.nix;
+      in {
         apps.update = {
           type = "app";
           program = toString (pkgs.writeShellScript "update-script" ''
@@ -30,18 +32,14 @@
             echo "Updating flake..."
             nix flake update
             echo "Updating home-manager..."
-            nix run nixpkgs#home-manager -- switch --flake .#myHomeConfig
+            nix run nixpkgs#home-manager -- switch --flake . --impure
             echo "Update complete!"
           '');
         };
-      };
 
-      flake = {
-        homeConfigurations = let
-          cfg = import ./nix/config.nix;
-        in {
-          myHomeConfig = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = import inputs.nixpkgs { system = cfg.system; };
+        legacyPackages.homeConfigurations = {
+          ${cfg.user.name} = inputs.home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
             extraSpecialArgs = {
               inherit inputs;
               dotfilesConfig = cfg;
@@ -50,5 +48,7 @@
           };
         };
       };
+
+      flake = {};
     };
 }
