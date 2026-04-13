@@ -120,3 +120,9 @@ source <(fzf --zsh)
 #  Path  #
 ##########
 PATH="$HOME/.local/bin:$PATH"
+
+
+###########
+#  Local  #
+###########
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
