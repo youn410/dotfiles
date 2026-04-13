@@ -45,3 +45,23 @@ pushd ~/.dotfiles
 ```sh
 nix run nixpkgs#home-manager -- switch --flake . --impure
 ```
+
+## Machine-local zsh configuration
+
+`~/.zshrc` is managed by Nix (home-manager) and is read-only.
+For settings that should not be committed — machine-specific `PATH`, secrets, work aliases, proxy settings, etc. — create `~/.zshrc.local`:
+
+```sh
+touch ~/.zshrc.local
+```
+
+It is sourced automatically at the end of `~/.zshrc`:
+
+```zsh
+# ~/.zshrc.local (not tracked by git)
+export SOME_SECRET=...
+export PATH="$HOME/work/bin:$PATH"
+alias work='cd ~/work'
+```
+
+`~/.zshrc.local` is intentionally excluded from this repository.
