@@ -6,6 +6,7 @@
   programs.zsh = {
     enable = true;
     enableCompletion = false;
-    initExtra = builtins.readFile ../../files/.zshrc;
+    envExtra = builtins.readFile ../../files/.zshenv;
+    initContent = builtins.readFile ../../files/.zshrc;
   };
 }

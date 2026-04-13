@@ -121,7 +121,6 @@ source <(fzf --zsh)
 ##########
 PATH="$HOME/.local/bin:$PATH"
 
-
 ###########
 #  Local  #
 ###########
