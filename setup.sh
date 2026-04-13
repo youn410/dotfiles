@@ -24,7 +24,6 @@ fi
 # shell config
 link_file .bashrc
 link_file .zshenv
-link_file .zshrc
 link_file .zlogout
 link_file .local/share/zsh/site-functions
 
