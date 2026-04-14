@@ -26,9 +26,6 @@ link_file .bashrc
 link_file .zlogout
 link_file .local/share/zsh/site-functions
 
-# git config
-link_file .config/git/config
-
 # vim config
 link_file .vim
 

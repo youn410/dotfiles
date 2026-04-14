@@ -65,3 +65,24 @@ alias work='cd ~/work'
 ```
 
 `~/.zshrc.local` is intentionally excluded from this repository.
+
+## Machine-local git configuration
+
+`~/.config/git/config` is managed by Nix (home-manager) and is read-only.
+For settings that should not be commited -- user name, email, signing keys, etc, -- create `~/.config/git/user`;
+
+```sh
+mkdir -p ~/.config/git
+touch ~/.config/git/user
+```
+
+It is included automatically via `[include] path = ~/.config/git/user` in the managed config:
+
+```ini
+# ~/.config/git/user (not tracked by git)
+[user]
+  name = Your name
+  email = you@example.com
+```
+
+`~/.config/git/user` is intentionally excluded from this repository.
