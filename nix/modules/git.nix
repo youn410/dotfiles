@@ -31,6 +31,16 @@
       pull.ff           = "only";
       push.default      = "simple";
       rebase.autosquash = true;
+      rebase.autoStash  = true;
+
+      fetch.prune            = true;
+      push.autoSetupRemote   = true;
+      merge.conflictstyle    = "zdiff3";
+      rerere.enabled         = true;
+      branch.sort            = "-committerdate";
+      log.date               = "iso";
+
+      init.defaultBranch = "main";
     };
   };
 
