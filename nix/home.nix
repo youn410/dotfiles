@@ -10,6 +10,7 @@
     ./modules/neovim.nix
     ./modules/tmux.nix
     ./modules/zsh.nix
+    ./modules/claude.nix
   ];
 
   home = {
