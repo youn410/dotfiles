@@ -5,6 +5,7 @@
     globalConfig = {
       tools = {
         node = "lts";
+        "npm:@openai/codex" = "latest";
       };
     };
   };
