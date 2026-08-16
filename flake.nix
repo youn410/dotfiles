@@ -32,7 +32,8 @@
             echo "Updating flake..."
             nix flake update
             echo "Updating home-manager..."
-            nix run nixpkgs#home-manager -- switch --flake . --impure
+            nix build ".#legacyPackages.${pkgs.system}.homeConfigurations.${cfg.user.name}.activationPackage" --impure
+            ./result/activate
             echo "Update complete!"
           '');
         };
