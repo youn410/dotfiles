@@ -43,7 +43,8 @@ pushd ~/.dotfiles
 ### Bootstrap Nix home-manager
 
 ```sh
-nix run nixpkgs#home-manager -- switch --flake . --impure
+nix build ".#legacyPackages.$(nix eval --raw --impure --expr builtins.currentSystem).homeConfigurations.$(whoami).activationPackage" --impure
+./result/activate
 ```
 
 ## Machine-local zsh configuration
