@@ -43,8 +43,11 @@ pushd ~/.dotfiles
 ### Bootstrap Nix home-manager
 
 ```sh
-nix run nixpkgs#home-manager -- switch --flake . --impure
+nix build ".#legacyPackages.$(nix eval --raw --impure --expr builtins.currentSystem).homeConfigurations.$(whoami).activationPackage" --impure
+./result/activate
 ```
+
+This same command can also be used to apply config changes later — it rebuilds and activates using the versions pinned in `flake.lock`. To also update pinned dependencies (nixpkgs, home-manager, etc.) before applying, use `nix run .#update --impure` instead.
 
 ## Machine-local zsh configuration
 
