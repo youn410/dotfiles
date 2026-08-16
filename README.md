@@ -47,6 +47,8 @@ nix build ".#legacyPackages.$(nix eval --raw --impure --expr builtins.currentSys
 ./result/activate
 ```
 
+This same command can also be used to apply config changes later — it rebuilds and activates using the versions pinned in `flake.lock`. To also update pinned dependencies (nixpkgs, home-manager, etc.) before applying, use `nix run .#update --impure` instead.
+
 ## Machine-local zsh configuration
 
 `~/.zshrc` is managed by Nix (home-manager) and is read-only.
