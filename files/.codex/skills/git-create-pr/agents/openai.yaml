@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Create PR"
+  short_description: "Create structured GitHub pull requests"
+  default_prompt: "Use $git-create-pr to create a structured pull request from my current branch."

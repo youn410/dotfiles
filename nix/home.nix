@@ -11,6 +11,7 @@
     ./modules/tmux.nix
     ./modules/zsh.nix
     ./modules/claude.nix
+    ./modules/codex.nix
   ];
 
   home = {
