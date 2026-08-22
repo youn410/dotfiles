@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit"
+  short_description: "Create intent-based git commits"
+  default_prompt: "Use $git-commit to review my changes and create intent-based commits."
