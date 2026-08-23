@@ -1,0 +1,14 @@
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 8
+default_subagent_reasoning_effort = "medium"
+
+[projects."/Users/nomu/Documents/vcs/github.com/youn410/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/nomu/Documents/vcs/github.com/youn410/setup-claude-agents.sh"]
+trust_level = "trusted"
