@@ -1,5 +1,8 @@
 { ... }: {
-  home.file.".agents/skills".source = ../../files/.agents/skills;
+  home.file.".agents/skills" = {
+    source = ../../files/.agents/skills;
+    force = true;
+  };
 
   home.file.".codex/AGENTS.md".source = ../../files/.codex/AGENTS.md;
 
